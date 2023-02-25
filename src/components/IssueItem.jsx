@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
-import { GoIssueOpened, GoIssueClosed, GoComment } from 'react-icons/go'
-import { relativeDate } from '../helpers/relativeDate'
-import { useUserData } from '../helpers/useUserData'
+import { Link } from "react-router-dom";
+import { GoIssueOpened, GoIssueClosed, GoComment } from "react-icons/go";
+import { relativeDate } from "../helpers/relativeDate";
+import { useUserData } from "../helpers/useUserData";
+import Label from "./Label";
 export function IssueItem({
   title,
   number,
@@ -12,39 +13,37 @@ export function IssueItem({
   labels,
   status,
 }) {
-  const assigneeUser = useUserData(assignee)
-  const createdByUser = useUserData(createdBy)
+  const assigneeUser = useUserData(assignee);
+  const createdByUser = useUserData(createdBy);
   return (
     <li>
       <div>
-        {status === 'done' || status === 'cancelled' ? (
-          <GoIssueClosed style={{ color: 'red' }} />
+        {status === "done" || status === "cancelled" ? (
+          <GoIssueClosed style={{ color: "red" }} />
         ) : (
-          <GoIssueOpened style={{ color: 'green' }} />
+          <GoIssueOpened style={{ color: "green" }} />
         )}
       </div>
       <div className="issue-content">
         <span>
           <Link to={`/issue/${number}`}>{title}</Link>
           {labels.map((label) => (
-            <span key={label} className={`label red`}>
-              {label}
-            </span>
+            <Label key={label.id} label={label} />
           ))}
         </span>
         <small>
-          #{number} opened {relativeDate(createdDate)}{' '}
-          {createdByUser.isSuccess ? `by ${createdByUser.data.name}` : ''}
+          #{number} opened {relativeDate(createdDate)}{" "}
+          {createdByUser.isSuccess ? `by ${createdByUser.data.name}` : ""}
         </small>
       </div>
       {assignee ? (
         <img
           src={
-            assigneeUser.isSuccess ? assigneeUser.data.profilePictureUrl : ''
+            assigneeUser.isSuccess ? assigneeUser.data.profilePictureUrl : ""
           }
           className="assigned-to"
           alt={`Assigned to ${
-            assigneeUser.isSuccess ? assigneeUser.data.name : 'avatar'
+            assigneeUser.isSuccess ? assigneeUser.data.name : "avatar"
           }`}
         />
       ) : null}
@@ -57,5 +56,5 @@ export function IssueItem({
         ) : null}
       </span>
     </li>
-  )
+  );
 }
